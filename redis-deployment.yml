@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    app: demo-voting-app
+
+spec:
+  replicas: 1 # one replica is needed because we need a single instance of the database
+  selector: 
+    matchLabels:
+      name: redis-pod
+      app: demo-voting-app
+  
+  template: # the pod is created with the information in the template object
+    metadata:
+      name: redis-pod
+      labels:
+        name: redis-pod
+        app: demo-voting-app
+    spec:
+      containers:
+        - name: redis-container
+          image: redis
+          ports:
+            - containerPort: 6379
